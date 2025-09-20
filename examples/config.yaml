@@ -1,0 +1,45 @@
+version: 1
+ssh:
+  user: user
+  port: 22
+  private_key_path: ~/.ssh/id_ed25519
+  become: true
+
+hosts:
+  - name: yc-ubuntu
+    address: 84.201.159.130
+
+    sysctl:
+      vm.swappiness: "10"
+      net.ipv4.ip_forward: "1"
+
+    hosts_entries:
+      managed_block_name: "sre-managed"
+      entries:
+        - "10.10.0.5 db.internal"
+        - "10.10.0.6 cache.internal"
+
+    packages:
+      present: ["htop", "curl", "nginx=1.24.*"]
+      absent: ["snapd"]
+
+    docker_apps:
+      - name: "node-exporter"
+        image: "prom/node-exporter:v1.8.1"
+        restart_policy: "unless-stopped"
+        ports: ["9100:9100"]
+        cpus: 0.1
+        memory: "64m"
+
+      # - name: "vector"
+      #   image: "timberio/vector:0.38.0-debian"
+      #   restart_policy: "unless-stopped"
+      #   env:
+      #     TZ: "Europe/Moscow"
+      #     VECTOR_LOG: "info"
+      #   command: ["--config", "/etc/vector/vector.yaml"]
+      #   volumes: ["/etc/vector/:/etc/vector/:ro", "/var/log/:/var/log/:ro"]
+      #   ports: []
+      #   cpus: 0.5
+      #   memory: "256m"
+      #   extra_hosts: ["loki.internal:10.10.0.7"]

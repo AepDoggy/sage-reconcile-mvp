@@ -1,0 +1,7 @@
+# dotnet
+bin/
+obj/
+
+# ansible temp
+.sage-tmp/
+*.retry

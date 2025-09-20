@@ -1,0 +1,61 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    # 0) На случай отсутствия python3 
+    - name: Ensure python3 is present
+      raw: test -e /usr/bin/python3 || (apt-get update && apt-get install -y python3)
+      become: true
+      changed_when: false
+
+    # 1) sysctl
+    - name: Ensure sysctl values
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        sysctl_file: /etc/sysctl.d/99-sre.conf
+        state: present
+        reload: true
+      loop: "{{ (sysctls | default({})) | dict2items }}"
+
+    # 2) /etc/hosts — управляем только нашим блоком
+    - name: Manage SRE block in /etc/hosts
+      blockinfile:
+        path: /etc/hosts
+        marker: "# --- SRE {mark} {{ hosts_block_name | default('sre-managed') }} ---"
+        block: |
+          {% for line in (hosts_entries | default([])) %}
+          {{ line }}
+          {% endfor %}
+
+    # 3) Пакеты
+    - name: Ensure present packages
+      apt:
+        name: "{{ packages_present | default([]) }}"
+        state: present
+        update_cache: yes
+      when: (packages_present | default([])) | length > 0
+
+    - name: Ensure absent packages
+      apt:
+        name: "{{ packages_absent | default([]) }}"
+        state: absent
+      when: (packages_absent | default([])) | length > 0
+
+    # 4) Docker контейнеры
+    - name: Run docker apps
+      community.docker.docker_container:
+        name: "{{ item.name }}"
+        image: "{{ item.image }}"
+        restart_policy: "{{ item.restart_policy | default('unless-stopped') }}"
+        env: "{{ item.env | default({}) }}"
+        command: "{{ item.command | default(omit) }}"
+        volumes: "{{ item.volumes | default([]) }}"
+        published_ports: "{{ item.ports | default([]) }}"
+        cpus: "{{ item.cpus | default(omit) }}"
+        memory: "{{ item.memory | default(omit) }}"
+        extra_hosts: "{{ item.extra_hosts | default(omit) }}"
+        pull: yes
+        state: started
+      loop: "{{ docker_apps | default([]) }}"
+
