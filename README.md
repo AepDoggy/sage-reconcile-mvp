@@ -355,6 +355,8 @@ sudo systemctl unmask sage-reconcile.service
 - параметризованные юниты `sage-reconcile@<host>.service/.timer` — по одному на хост
 - два `ExecStart`, первый с префиксом `-` (игнорировать ошибку одного из хостов)
 
+Архив sage_Published_with_demon.tar.gz - пример как будет выглядет опубликованный Sage с демоном 
+
 ---
 
 ## Проверка и отладка
