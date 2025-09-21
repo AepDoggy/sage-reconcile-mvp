@@ -259,7 +259,7 @@ DISABLE_HOST_KEY_CHECKING=true \
 FORKS=5 \
 ./scripts/install_sage.sh examples/config.yaml
 
-
+Ручная публикация и установка демона
 
  (framework‑dependent, требуется `dotnet` на контроллере):
 ```bash
