@@ -4,20 +4,17 @@ namespace SageCli.Ansible;
 
 public static class AnsibleRunner
 {
-    /// <summary>
-    /// Запуск ansible-playbook.
-    /// Логи workDir/ansible.stdout.log и workDir/ansible.stderr.log.
-    /// </summary>
     public static int Run(
         string workDir,
         string? limit = null,
         bool check = true,
         bool askBecomePass = false,
         int? forks = null,
-        bool verbose = false)
+        bool verbose = false,
+        string logPrefix = "ansible")
     {
-        var stdoutPath = Path.Combine(workDir, "ansible.stdout.log");
-        var stderrPath = Path.Combine(workDir, "ansible.stderr.log");
+        var stdoutPath = Path.Combine(workDir, $"{logPrefix}.stdout.log");
+        var stderrPath = Path.Combine(workDir, $"{logPrefix}.stderr.log");
 
         using var stdout = new StreamWriter(File.Open(stdoutPath, FileMode.Create, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
         using var stderr = new StreamWriter(File.Open(stderrPath, FileMode.Create, FileAccess.Write, FileShare.Read)) { AutoFlush = true };
@@ -31,8 +28,7 @@ public static class AnsibleRunner
             UseShellExecute = false
         };
 
-        psi.ArgumentList.Add("-i");
-        psi.ArgumentList.Add("inventory.ini");
+        psi.ArgumentList.Add("-i"); psi.ArgumentList.Add("inventory.ini");
         if (!string.IsNullOrWhiteSpace(limit)) { psi.ArgumentList.Add("-l"); psi.ArgumentList.Add(limit!); }
         if (forks.HasValue) { psi.ArgumentList.Add("-f"); psi.ArgumentList.Add(forks.Value.ToString()); }
         if (verbose) { psi.ArgumentList.Add("-v"); }
