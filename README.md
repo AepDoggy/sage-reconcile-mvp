@@ -29,6 +29,7 @@
 - [Ограничения и планы](#ограничения)
 - [Планы](#планы)
 - [Скриншоты работы программы](#скриншоты)
+- [Маленькая демонстрация работы консоли](#Видеодемонстрация)
 
 ---
 
@@ -506,5 +507,16 @@ host2 : ok=6 changed=0 failed=0 ...
 - Ротация логов
 - Дрифт-детект и отчётность
 
+  ## Скриншоты
+План оба хоста приведенные к целевой конфигурации 
+![Screenshot_62](https://github.com/user-attachments/assets/93f841fb-9a54-40e0-8424-418251a1150a)
+![Screenshot_63](https://github.com/user-attachments/assets/a7472654-9a75-4622-9bb9-b365981cde97)
 
-## Скриншоты
+Внесли изменения и они отобразились в плане
+![План_Изменений](https://github.com/user-attachments/assets/aa6f489f-7b2d-4bf6-b877-186aa51fb0e7)
+После запуска демона изменения откатились к целевой конфигурации
+![Запуск демона и откат изменений](https://github.com/user-attachments/assets/d3ccfd6d-6638-424c-b0a4-8f8d5a9e866d)
+
+## Видеодемонстрация
+
+https://drive.google.com/file/d/12rkLPfFHDAk3BHTL8aiyBJ-H8i-sQDr6/view?usp=sharing
