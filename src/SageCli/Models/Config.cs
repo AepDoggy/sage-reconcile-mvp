@@ -6,7 +6,16 @@ public class RootConfig
 {
     public int Version { get; set; } = 1;
     public SshConfig Ssh { get; set; } = new();
+    public DefaultsConfig? Defaults { get; set; }
     public List<HostConfig> Hosts { get; set; } = new();
+}
+
+public class DefaultsConfig
+{
+    public Dictionary<string, string>? Sysctl { get; set; }
+    public HostsFileConfig? HostsEntries { get; set; }
+    public PackagesConfig? Packages { get; set; }
+    public List<DockerApp>? DockerApps { get; set; }
 }
 
 public class SshConfig

@@ -88,7 +88,7 @@ if (!File.Exists(templatePath))
 
 gen.WriteSiteYml(templatePath);
 gen.WriteInventory(cfg);
-foreach (var h in cfg.Hosts) gen.WriteHostVars(h);
+foreach (var h in cfg.Hosts) gen.WriteHostVars(h, cfg.Defaults);
 
 Console.WriteLine($"Ansible workdir: {gen.WorkDir}");
 

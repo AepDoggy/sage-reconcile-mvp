@@ -35,7 +35,7 @@ public class AnsibleGenerator
         File.WriteAllLines(Path.Combine(WorkDir, "inventory.ini"), lines);
     }
 
-    public void WriteHostVars(HostConfig host)
+        public void WriteHostVars(HostConfig host, DefaultsConfig? d = null)
     {
         var serializer = new SerializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -43,21 +43,26 @@ public class AnsibleGenerator
             .Build();
 
         var vars = new Dictionary<string, object?>();
-        if (host.Sysctl is { Count: > 0 }) vars["sysctls"] = host.Sysctl;
 
-        if (host.HostsEntries != null)
+        var sysctls = host.Sysctl ?? d?.Sysctl;
+        if (sysctls is { Count: > 0 }) vars["sysctls"] = sysctls;
+
+        var hostsEntries = host.HostsEntries ?? d?.HostsEntries;
+        if (hostsEntries != null)
         {
-            vars["hosts_block_name"] = host.HostsEntries.ManagedBlockName;
-            vars["hosts_entries"] = host.HostsEntries.Entries;
+            vars["hosts_block_name"] = hostsEntries.ManagedBlockName;
+            vars["hosts_entries"] = hostsEntries.Entries;
         }
 
-        if (host.Packages != null)
+        var pkgs = host.Packages ?? d?.Packages;
+        if (pkgs != null)
         {
-            if (host.Packages.Present.Count > 0) vars["packages_present"] = host.Packages.Present;
-            if (host.Packages.Absent.Count > 0) vars["packages_absent"] = host.Packages.Absent;
+            if (pkgs.Present.Count > 0) vars["packages_present"] = pkgs.Present;
+            if (pkgs.Absent.Count > 0) vars["packages_absent"] = pkgs.Absent;
         }
 
-        if (host.DockerApps is { Count: > 0 }) vars["docker_apps"] = host.DockerApps;
+        var dockerApps = host.DockerApps ?? d?.DockerApps;
+        if (dockerApps is { Count: > 0 }) vars["docker_apps"] = dockerApps;
 
         var yml = serializer.Serialize(vars);
         var path = Path.Combine(WorkDir, "host_vars", $"{host.Name}.yml");
