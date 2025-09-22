@@ -49,7 +49,8 @@ sudo apt-get install -y dotnet-sdk-8.0 ansible python3-pip jq git openssh-client
 ansible-galaxy collection install community.docker ansible.posix
 ```
 
-**Целевые хосты (Ubuntu 24.04):**
+**Целевые хосты (Ubuntu 24.04): Я прогонял MVP на двух ВМ в Yandex Cloud с Ubuntu:**
+
 - Доступны по публичному IP/имени
 - Python3 установлен (если нет — playbook поставит)
 - Docker установлен и запущен (для docker‑apps)
