@@ -530,5 +530,5 @@ host2 : ok=6 changed=0 failed=0 ...
 ![Запуск демона и откат изменений](https://github.com/user-attachments/assets/d3ccfd6d-6638-424c-b0a4-8f8d5a9e866d)
 
 ## Видеодемонстрация
-
+На видео HOST UNREACHABLE показывает что при сбое на стороне одного целевого хоста, другой отрабатывает штатно, демонстрируя отказоустойчивость
 https://drive.google.com/file/d/12rkLPfFHDAk3BHTL8aiyBJ-H8i-sQDr6/view?usp=sharing
