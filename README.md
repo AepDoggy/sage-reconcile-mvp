@@ -251,13 +251,16 @@ hosts:
 Установка (Beta installer):
 Инсталлер не до конца протестирован 
 
-из репо выполнять 
+Из репо выполнять 
+опционально: выбрать свой config и ключ
+```bash
 chmod +x scripts/install_sage.sh
-#опционально: выбрать свой config и ключ
+
 OVERRIDE_KEY_PATH=/root/.ssh/id_ed25519 \
 DISABLE_HOST_KEY_CHECKING=true \
 FORKS=5 \
 ./install_sage.sh examples/config.yaml
+```
 
 Ручная публикация и установка демона
 
