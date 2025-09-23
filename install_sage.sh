@@ -9,7 +9,7 @@ FORKS="${FORKS:-5}"
 LIMIT="${LIMIT:-}"                                      # опционально: --limit для сервиса
 
 # === Абсолютные пути к репо и файлам ===
-ROOT_DIR="/home/user/Desktop/sage-reconcile-mvp-main"; pwd
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 if [[ "$CONFIG" != /* ]]; then CONFIG="$ROOT_DIR/$CONFIG"; fi
 DIST_DIR="$ROOT_DIR/dist/sage"
 

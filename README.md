@@ -251,15 +251,13 @@ hosts:
 Установка (Beta installer):
 Инсталлер не до конца протестирован 
 
-(ROOT_DIR="/home/user/Desktop/sage-reconcile-mvp-main"; pwd) поменять на путь где у вас хранится репо
-
 из репо выполнять 
 chmod +x scripts/install_sage.sh
 #опционально: выбрать свой config и ключ
 OVERRIDE_KEY_PATH=/root/.ssh/id_ed25519 \
 DISABLE_HOST_KEY_CHECKING=true \
 FORKS=5 \
-./scripts/install_sage.sh examples/config.yaml
+./install_sage.sh examples/config.yaml
 
 Ручная публикация и установка демона
 
@@ -435,6 +433,13 @@ host2 : ok=6 changed=0 failed=0 ...
 - **apt**: зависания/блокировки
   - Возможно, идёт `apt` из других процессов. Подождите или очистите `dpkg`‑lock.
 
+- **CRLF → LF**
+
+  - Если видите «cannot execute: required file not found» / ^M:
+
+   ```bash
+   sed -i 's/\r$//' install_sage.sh
+   ```
 ---
 
 ## Архитектура и структура репозитория
@@ -483,7 +488,7 @@ host2 : ok=6 changed=0 failed=0 ...
     Делал `docker stop node-exporter` — на следующем прогоне контейнер снова поднимался.  
     Проверка: `docker ps | grep node-exporter`.
     
-- ✅ **Мультихост**  
+- ✅ **Мультихост на облаке**  
     Работал с `yc-ubuntu-1` и `yc-ubuntu-2`. Видел типовые SSH-проблемы (known_hosts/ключ), после фикса — всё ок.  
     Если один хост недоступен, второй всё равно приводится в порядок (для MVP — единый сервис).
     
