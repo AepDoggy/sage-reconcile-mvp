@@ -25,7 +25,7 @@
 - [Чек‑лист тестов (drift → reconcile)](#чеклист-тестов-drift--reconcile)
 - [Типовые проблемы и решения](#типовые-проблемы-и-решения)
 - [Архитектура и структура репозитория](#архитектура-и-структура-репозитория)
-- [Тесты](#Тесты)
+- [Тесты](#тесты-сценарии-и-unit)
 - [Ограничения и планы](#ограничения)
 - [Планы](#планы)
 - [Скриншоты работы программы](#скриншоты)
@@ -469,7 +469,8 @@ host2 : ok=6 changed=0 failed=0 ...
 
 ---
 
-## Тесты
+## Тесты: Сценарии и Unit
+**Тестовые сценарии**
 
 - ✅ **sysctl**  
     Довожу хосты до нужного состояния: `vm.swappiness=10`, `net.ipv4.ip_forward=1`.  
@@ -500,11 +501,25 @@ host2 : ok=6 changed=0 failed=0 ...
     `Drift detected changed=0` и `Nothing to reconcile`.  
     Проверка: `systemctl status sage-reconcile.timer` и `journalctl -u sage-reconcile.service -n 100 -f`.
 
+### Unit-тесты (engine)
+**Где:** `tests/SageCli.Tests` (xUnit, .NET 8)
 
+**Покрытие:**
+- `ConfigValidationTests` — валидная конфигурация проходит; битая — падает.
+- `ConfigLoaderTests` — `~` в путях разворачивается в `$HOME`.
+- `AnsibleGeneratorTests` — создаются `inventory.ini`, `host_vars/`, `site.yml`.
+- `DriftDetectorTests` — из `PLAY RECAP` верно считается суммарный `changed`.
 
-
-
-
+**Запуск:**
+```bash
+dotnet test
+# конкретный тест
+dotnet test --filter "Name~DriftDetector"
+```
+Конкретный тест
+```bash
+dotnet test --filter "Name~DriftDetector"
+```
 
 ## Ограничения
 
