@@ -458,7 +458,8 @@ host2 : ok=6 changed=0 failed=0 ...
 │  └─ site.yml             # общий плейбук (sysctl, hosts, apt, docker)
 ├─ examples/
 │  └─ config.yaml          # пример конфига (2 хоста + defaults)
-├─ docs/                   # (опционально) YAML_SPEC.md, TESTS.md, EXAMPLES.md
+├─ tests/SageCli.Tests/        # unit-тесты (xUnit)
+├─ install_sage.sh             # инсталлятор (корень репо)
 └─ .sage-tmp/              # временные рабочие директории запусков
 ```
 
@@ -514,10 +515,6 @@ host2 : ok=6 changed=0 failed=0 ...
 ```bash
 dotnet test
 # конкретный тест
-dotnet test --filter "Name~DriftDetector"
-```
-Конкретный тест
-```bash
 dotnet test --filter "Name~DriftDetector"
 ```
 
